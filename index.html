@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<!--
+Version by Matthew Badcock
+eeu247@bangor.ac.uk
+-->
+<html>
+	<head>
+		<title>Student Sidebar - Teach 'n Go Frontent Challenge</title>
+	</head>
+
+	<style type="text/css">
+		body{
+			background-color: #f5f5f5;
+			height: 100vh;
+			margin: 0;
+		}
+		h1, h2, p{
+			font-family: Segoe, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+			margin-top: 0;
+			color: #353535;
+		}
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px;
+
+        }
+		.content{
+			float: left;
+			padding: 25px;
+			padding-right: 250px;
+			margin-right: -250px;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+            width: 70%;
+			height: 100%;
+            position: fixed;
+		}
+        .content.header {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding-left: 3%;
+        }
+        .description{
+            display: none;
+            width: 100%;
+            height: auto;
+            -moz-box-sizing: border-box;
+			box-sizing: border-box;
+             border: 2px solid #e1e1e1;
+            overflow-y: scroll;
+        }
+		.sidebar{
+		    float:right;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+            width: 30%;
+		    height: 100%;
+		    background-color: #f1f1f1;
+		    border-left: 2px solid #e1e1e1;
+            overflow-y: scroll;
+            word-wrap: break-word;
+            display: table;
+		}
+        .sidebar_element{
+            border-bottom: 2px solid #e1e1e1;
+            display: table-row;
+        }
+        .sidebar_element:hover {
+            cursor: pointer;
+            background-color: #e1e1e1;
+        }
+        .sidebar_element img{
+            width: auto;
+            height: 70%;
+        }
+        .status_inactive {
+            color: #BD524C;
+        }
+        .status_active {
+            color: #03A323;
+        }
+		.clear-floats{
+			clear: both;
+		}
+        ::-webkit-scrollbar {
+            background-color: #e1e1e1;
+            width: 0.5em;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #AAAAAA;
+        }
+	</style>
+
+	<body>
+		<div class="content">
+            <div class="header">
+                <div class="portrait">
+                </div>
+                <div class="info">
+                    <h1 class="name" id="name">Student Profile</h1>
+                    <span class="status" id="status"><h2>Select a student to view their profile</h2></span>
+                </div>
+            </div>
+            <div class="description">
+                <h2>Description</h2>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>            
+		</div>
+		<div class="sidebar" id="sidebar"></div>
+		<div class="clear-floats"></div>
+        
+		<script>
+        /*
+            Struct of student info
+            Part of template
+        */
+			var students = [
+				{"full_name":"Manuel Perry", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic001.png", "status":"active"},
+				{"full_name":"Christopher Hart", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic002.png", "status":"active"},
+				{"full_name":"Patricia Williams", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic003.png", "status":"inactive"},
+				{"full_name":"Anthony Samuel", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic004.png", "status":"active"},
+				{"full_name":"Alan Wagner", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic005.png", "status":"active"},
+				{"full_name":"Samantha Lynas", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic006.png", "status":"inactive"},
+				{"full_name":"Johnny Blue", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic007.png", "status":"active"},
+				{"full_name":"Allan Bowman", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic008.png", "status":"inactive"},
+				{"full_name":"Kathryn Sauer" ,"photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic009.png", "status":"active"},
+				{"full_name":"Natalie Doe", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic010.png", "status":"inactive"},
+				{"full_name":"Dr. Zach", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic011.png", "status":"active"},
+				{"full_name":"Melanie Gibson", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic012.png", "status":"active"},
+				{"full_name":"Manuel Perry", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic001.png", "status":"active"},
+				{"full_name":"Christopher Hart", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic002.png", "status":"active"},
+				{"full_name":"Patricia Williams", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic003.png", "status":"inactive"},
+				{"full_name":"Anthony Samuel", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic004.png", "status":"active"},
+				{"full_name":"Alan Wagner", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic005.png", "status":"active"},
+				{"full_name":"Samantha Lynas", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic006.png", "status":"inactive"},
+				{"full_name":"Johnny Blue", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic007.png", "status":"active"},
+				{"full_name":"Allan Bowman", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic008.png", "status":"inactive"},
+				{"full_name":"Kathryn Sauer" ,"photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic009.png", "status":"active"},
+				{"full_name":"Natalie Doe", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic010.png", "status":"inactive"},
+				{"full_name":"Dr. Zach", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic011.png", "status":"active"},
+				{"full_name":"Melanie Gibson", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic012.png", "status":"active"},
+				{"full_name":"Manuel Perry", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic001.png", "status":"active"},
+				{"full_name":"Christopher Hart", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic002.png", "status":"active"},
+				{"full_name":"Patricia Williams", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic003.png", "status":"inactive"},
+				{"full_name":"Anthony Samuel", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic004.png", "status":"active"},
+				{"full_name":"Alan Wagner", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic005.png", "status":"active"},
+				{"full_name":"Samantha Lynas", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic006.png", "status":"inactive"},
+				{"full_name":"Johnny Blue", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic007.png", "status":"active"},
+				{"full_name":"Allan Bowman", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic008.png", "status":"inactive"},
+				{"full_name":"Kathryn Sauer" ,"photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic009.png", "status":"active"},
+				{"full_name":"Natalie Doe", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic010.png", "status":"inactive"},
+				{"full_name":"Dr. Zach", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic011.png", "status":"active"},
+				{"full_name":"Melanie Gibson", "photo_link":"http://www.teachngo.com/jobs/challenges/frontend/avatars/pic012.png", "status":"active"}
+			]
+            
+            /*
+                add all the students to the sidebar
+            */
+            for (var i = 0; i < students.length; i++){
+                //prepare HTML for a sidebar entry
+                var sidebar_item =  "<div  onClick=\"displayProfile(event);\" class=\"sidebar_element\" id=\"sidebar_element\">" +
+                                    "<table>" +
+                                        "<tr>" +
+                                            "<td rowspan=\"3\">" + "<img src = " + students[i].photo_link + ">" + "</td>" +
+                                            "<td>" + "<h1>" + students[i].full_name + "</h1>" + "</td>" +
+                                        "</tr>" +
+                                        "<tr>";
+                if(students[i].status == "inactive"){   //inactive status = red colour
+                    sidebar_item = sidebar_item + "<td> <h2 class=\"status_inactive\">" + students[i].status + "</h2> </td>";
+                }
+                else{   //active status = green colour
+                    sidebar_item = sidebar_item + "<td> <h2 class=\"status_active\">" + students[i].status + "</h2> </td>";
+                }
+                                            
+                sidebar_item = sidebar_item + "</tr></table></div>";
+                
+                //find sidebar divider and add the item to it
+                var div = document.getElementById('sidebar');
+                div.innerHTML = div.innerHTML + sidebar_item;
+            }
+            
+            /*
+                listener to display the selected student profile
+            */            
+            function displayProfile(event){
+                //get name from clicked div
+                var text = "textContent" in document ? "textContent" : "innerText";
+                var parent = getParent(event.target);
+                var name = parent[4].getElementsByTagName("h1")[0][text];
+
+                //set title in content to the name
+                document.getElementsByClassName("name")[0].innerHTML = name;
+                        
+                //search struct for name, return status and picture src
+                var result = students.filter(function( obj ) {
+                    return obj.full_name == name;
+                });
+                //check status of user and change h2 colour accordingly
+                if(result[0].status == "active"){
+                    document.getElementsByClassName("status")[0].innerHTML = "<h2 class=\"status_active\">" + result[0].status + "</h2>";
+                }
+                else{
+                    document.getElementsByClassName("status")[0].innerHTML = "<h2 class=\"status_inactive\">" + result[0].status + "</h2>";
+                }
+                //add picture to portrait div
+                document.getElementsByClassName("portrait")[0].innerHTML = "<img src = " + result[0].photo_link + ">";   
+                
+                //display description
+                document.getElementsByClassName("description")[0].style.display = "block";
+            }
+            
+            /*
+                get the parents of a selected node
+            */
+            function getParent(node) {
+                var results = [];
+                while (node) {
+                    results.unshift(node);
+                    node = node.parentNode;
+                }
+                return results;
+            }
+            
+		</script>
+	</body>
+</html>
